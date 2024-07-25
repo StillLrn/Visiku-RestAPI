@@ -25,30 +25,31 @@ func QueryParam(name string, desc string, ctgID string, page string) (bool, []pr
 	sliceName := strings.Split(name, "%")
 	sliceDesc := strings.Split(desc, "%")
 
+	//erase
 	log.Printf("Name: %s -> Desc: %s -> CtgID: %s", sliceName[1], sliceDesc[1], ctgID)
 
 	if sliceName[1] != "" && sliceDesc[1] != "" && ctgID != "" {
 		res = configuration.DB.Where("name LIKE ? AND description LIKE ? AND category_id = ?", name, desc, ctgID).Order("id DESC").Find(&prod)
-		res.Count(&count)
 	} else if sliceName[1] != "" && sliceDesc[1] != "" {
 		res = configuration.DB.Where("name LIKE ? AND description LIKE ?", name, desc).Order("id DESC").Find(&prod)
-		res.Count(&count)
 	} else if sliceName[1] != "" {
 		res = configuration.DB.Where("name LIKE ?", name).Order("id DESC").Find(&prod)
-		res.Count(&count)
 	} else if sliceDesc[1] != "" {
 		res = configuration.DB.Where("description LIKE ?", desc).Order("id DESC").Find(&prod)
-		res.Count(&count)
 	} else if ctgID != "" {
 		res = configuration.DB.Where("category_id = ?", ctgID).Order("id DESC").Find(&prod)
-		res.Count(&count)
 	} else {
 		res = configuration.DB.Order("id DESC").Find(&prod)
-		res.Count(&count)
+	}
+
+	res.Count(&count)
+	// If count is zero
+	log.Println(count)
+	if count == 0 {
+		return res.RowsAffected < 0, nil, 0, 0, 0
 	}
 
 	// limit 1 page = 5
-
 	// count total page in db
 	totalPage := int(math.Ceil(float64(count) / 5))
 
