@@ -2,7 +2,6 @@ package productcontroller
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	productsmodel "visiku-restapi/Model/products"
 )
@@ -18,7 +17,6 @@ func Product(w http.ResponseWriter, r *http.Request) {
 		page := r.URL.Query().Get("page")
 
 		res, prod, now, all, count := productsmodel.QueryParam(name, desc, catID, page)
-		log.Println(res)
 
 		// Check such record exists or not
 		if !res {

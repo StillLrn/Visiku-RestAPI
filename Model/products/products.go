@@ -25,9 +25,6 @@ func QueryParam(name string, desc string, ctgID string, page string) (bool, []pr
 	sliceName := strings.Split(name, "%")
 	sliceDesc := strings.Split(desc, "%")
 
-	//erase
-	log.Printf("Name: %s -> Desc: %s -> CtgID: %s", sliceName[1], sliceDesc[1], ctgID)
-
 	if sliceName[1] != "" && sliceDesc[1] != "" && ctgID != "" {
 		res = configuration.DB.Where("name LIKE ? AND description LIKE ? AND category_id = ?", name, desc, ctgID).Order("id DESC").Find(&prod)
 	} else if sliceName[1] != "" && sliceDesc[1] != "" {
@@ -44,7 +41,6 @@ func QueryParam(name string, desc string, ctgID string, page string) (bool, []pr
 
 	res.Count(&count)
 	// If count is zero
-	log.Println(count)
 	if count == 0 {
 		return res.RowsAffected < 0, nil, 0, 0, 0
 	}
