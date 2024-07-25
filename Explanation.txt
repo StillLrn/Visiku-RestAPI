@@ -1,0 +1,23 @@
+// Built with native golang and without any frameworks
+// Library: GORM and bluemonday
+// Tech Used: mySQL as database, Postman API as API Service
+// So we need to import GORM with mysql and bluemonday from github into terminal. For example: go get ....
+
+// Get and Post method using proper json encoding to minimize XSS attack case
+// Before inserting user data request from API to database, I'm using bluemonday to sanitize the data to minimize XSS
+// I used pagination for REST API to prevent giving much workloads to server when the database rows like thousand or million
+// Because the data still in very small amount, i limit it to only 5 so we can see the difference
+// So, in conclusion:
+// I already manage to complete 2 out of 3 tasks, i could complete the 2nd task but the time is too short
+// So i only manage 2, they are point 1 and point 3
+// Point 1: What if there are thousands of products in the database? -> Pagination
+// Point 3: What if users perform stored xss and how to prevent it? -> Proper JSON Encoding and Sanitize IO data
+
+// I have made unit testing or dummy data for test needs in Configuration -> db.go
+// GET method already sorted by latest product, in this case i scale it with id. Because there's no timestamp column in db
+// Here some of my API documentation:
+// Query-Parameters:
+// 1. Product Name & Description
+// 2. Filter By ProductCategory, in this case by id
+// 1. Page -> Needed for pagination
+// I will take some screenshot to proof the API is working correctly
